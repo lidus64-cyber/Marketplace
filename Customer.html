@@ -1,195 +1,372 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market</title>
-    <style>
-        body{
-            background-color:rgb(244, 231, 233);
-        }
-        .top{
-        background-color: rgb(194, 236, 238);
-        font-family:Arial, Helvetica, sans-serif;
-        font-size:10px;
-        padding:5px;
-        margin:0;
-        color:White;
-        align-items:stretch;
-        display:flex;
-        height:75px;
-        justify-content:space-between;
-        gap:5px;
-        border-radius: 10px;
-    }
-    .top .marketplace{
-        display:flex;
-        text-align:center;
-        justify-content:center;
-        font-size:30px;
-        color:rgb(74, 9, 237);
-        padding: 0,30px;
-        align-items:center;
-    }
-    .top .marketplace .logo{
-        height:600px;
-        width:60px;
-        object-fit: contain;
-    }
-        
-    .container {
-    padding: 5px;
-    display: flex;
-    overflow-x: auto;
-    gap: 10px;
-    scroll-behavior: smooth;
-    height:150px;
-    overflow-y:hidden;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketplace</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
 }
 
+body{
+    background: linear-gradient(to right, #fdfbfb, #ebedee);
+}
+
+/* HEADER */
+.top{
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 20px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.marketplace{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo{
+    width:40px;
+}
+
+.marketplace h1{
+    font-size:22px;
+}
+
+.nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:15px;
+    font-size:14px;
+}
+
+.nav a:hover{
+    text-decoration:underline;
+}
+
+/* SEARCH BAR */
+.search-bar{
+    margin:15px auto;
+    max-width:500px;
+    display:flex;
+    background:white;
+    border-radius:25px;
+    padding:5px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.search-bar input{
+    border:none;
+    outline:none;
+    flex:1;
+    padding:8px 12px;
+    border-radius:25px;
+}
+
+.search-bar button{
+    border:none;
+    background:#667eea;
+    color:white;
+    padding:8px 15px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+/* CATEGORY MENU */
+.item-menu{
+    font-size:18px;
+    font-weight:600;
+    margin:15px;
+}
+
+.categories{
+    display:flex;
+    gap:10px;
+    padding:0 15px;
+    overflow-x:auto;
+}
+
+.category{
+    background:white;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    box-shadow:0 1px 5px rgba(0,0,0,0.1);
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.category:hover{
+    background:#667eea;
+    color:white;
+}
+
+/* PRODUCT SCROLL */
+.container {
+    padding: 15px;
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+}
+
+/* CARD */
 .card {
-    background: pink;
-    border-radius: 10px;
-    padding: 6px;
-    min-width: 95px; /* controls size of card */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-    transition: 0.2s;
-    flex-shrink: 0; /* prevents shrinking in scroll */
+    background: white;
+    border-radius: 12px;
+    padding: 10px;
+    min-width: 140px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
 }
 
 .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
 }
 
 .card img {
     width: 100%;
-    height: 70px;
+    height: 200px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
 .item-title {
-    font-size: 11px;
-    margin: 5px 0 3px;
-    font-weight: bold;
+    font-size: 13px;
+    margin: 6px 0;
+    font-weight: 600;
 }
 
 .item-price {
     color: #16a34a;
-    font-size: 11px;
-    margin-bottom: 4px;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+/* BUTTONS */
+.buttons{
+    display:flex;
+    gap:5px;
 }
 
 .item-button {
-    background: #2563eb;
+    flex:1;
+    background: #667eea;
     color: white;
     border: none;
-    padding: 3px;
+    padding: 5px;
     border-radius: 6px;
     cursor: pointer;
-    width: 100%;
-    font-size: 11px;
+    font-size: 12px;
+}
+
+.wishlist{
+    background:#f43f5e;
 }
 
 .item-button:hover {
-    background: #1d4ed8;
-}
-.item-menu{
-    font-size:25px;
-    font-weight:bold;
-    color:black;
-    font-family:arial,sans-serif;
-    padding:7px;
-
+    opacity:0.85;
 }
 
-    </style>
+/* SCROLLBAR */
+.container::-webkit-scrollbar{
+    height:6px;
+}
+.container::-webkit-scrollbar-thumb{
+    background:#ccc;
+    border-radius:10px;
+}
+
+</style>
 </head>
+
 <body>
-    <div class="top">
+
+<!-- HEADER -->
+<div class="top">
     <div class="marketplace">
         <img src="image/logo.png" class="logo">
         <h1>Marketplace</h1>
     </div>
+
     <div class="nav">
-        <a href="#">
-            Login |
-        </a>
-        <a href="#">
-            Sign Up |
-        </a>
-        <a href="#">
-            Customer Support & Help
-        </a>
+        <a href="#">Login</a>
+        <a href="#">Sign Up</a>
+        <a href="#">Help</a>
     </div>
-    </div>
-    <div class="item-menu">
-        Books ➔
-    </div>
-    <div class="container">
-        <div class="card">
-        <img src="#">
-        <div class="item-title">Product One</div>
-        <div class="item-price">$25</div>
-        <button class="item-button">Add to Cart</button>
-        </div>
-        <div class="card">
-        <img src="#">
-        <div class="item-title">Product Two</div>
-        <div class="item-price">$25</div>
-        <button class="item-button">Add to Cart</button>
-        </div>
-        <div class="card">
-        <img src="#">
-        <div class="item-title">Product Three</div>
-        <div class="item-price">$25</div>
-        <button class="item-button">Add to Cart</button>
-        </div>
-        <div class="card">
-        <img src="#">
-        <div class="item-title">Product Four</div>
-        <div class="item-price">$25</div>
-        <button class="item-button">Add to Cart</button>
-        </div>
-        <div class="card">
-        <img src="#">
-        <div class="item-title">Product Five</div>
-        <div class="item-price">$25</div>
-        <button class="item-button">Add to Cart</button>
-        </div>
-        <div class="card">
-        <img src="#">
-        <div class="item-title">Product Six</div>
-        <div class="item-price">$25</div>
-        <button class="item-button">Add to Cart</button>
-        </div>
-        <div class="card">
-        <img src="#">
-        <div class="item-title">Product Seven</div>
-        <div class="item-price">$25</div>
-        <button class="item-button">Add to Cart</button>
-        </div>
-        <div class="card">
-        <img src="#">
-        <div class="item-title">Product Eight</div>
-        <div class="item-price">$25</div>
-        <button class="item-button">Add to Cart</button>
-        </div>
-        <div class="card">
-        <img src="#">
-        <div class="item-title">Product Nine</div>
-        <div class="item-price">$25</div>
-        <button class="item-button">Add to Cart</button>
-        </div>
-        <div class="card">
-        <img src="#">
-        <div class="item-title">Product Ten</div>
-        <div class="item-price">$25</div>
-        <button class="item-button">Add to Cart</button>
+</div>
+
+<!-- SEARCH -->
+<div class="search-bar">
+    <input type="text" placeholder="Search products...">
+    <button>Search</button>
+</div>
+
+<!-- CATEGORY -->
+<div class="item-menu">Books ➔
+
+
+
+
+
+<div class="container">
+
+    <div class="card">
+        <img src="Harry.jpg">
+        <div class="item-title">Harry Potter</div>
+        <div class="item-price">Rs. 1700</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
         </div>
     </div>
 
+    <div class="card">
+        <img src="Game.jpg">
+        <div class="item-title">Game of thrones</div>
+        <div class="item-price">Rs. 2500 </div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
     </div>
+
+    <div class="card">
+        <img src="Marvel.jpg">
+        <div class="item-title">Marvel comic book</div>
+        <div class="item-price">Rs. 3000</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+
+
+<div class="item-menu">Clothes ➔<div class="container">
+
+    <div class="card">
+        <img src="Jacket.jpg">
+        <div class="item-title">Jacket</div>
+        <div class="item-price">Rs. 2100</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="hoodie.jpg">
+        <div class="item-title">Hoodie</div>
+        <div class="item-price">Rs. 3300</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="trousers.jpg">
+        <div class="item-title">Trousers</div>
+        <div class="item-price">Rs. 2500</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
+    
+    <div class="card">
+        <img src="messi.jpg">
+        <div class="item-title">Signed messi jersey</div>
+        <div class="item-price">Rs. 15000</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="brazil.jpg">
+        <div class="item-title">Brazil Jersey</div>
+        <div class="item-price">Rs. 2,500</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="Old Navy.jpg">
+        <div class="item-title">Old Navy</div>
+        <div class="item-price">Rs. 1500</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
+
+</div>
+    
+</div>
+
+
+<div class="item-menu">Stationery ➔
+    <div class="container">
+
+    <div class="card">
+        <img src="Pen.jpg">
+        <div class="item-title">Pen</div>
+        <div class="item-price">Rs. 50</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="Pencil.jpg">
+        <div class="item-title">Pencil</div>
+        <div class="item-price">Rs. 20</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="Sharpner.jpg">
+        <div class="item-title">Sharpner</div>
+        <div class="item-price">Rs. 20</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
+
+</div>
+</div>
+
+
+
+
+<!-- PRODUCTS -->
+
+
 </body>
 </html>
- 
