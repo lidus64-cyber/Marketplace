@@ -7,189 +7,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins', sans-serif;
-}
-
-body{
-    background: linear-gradient(to right, #fdfbfb, #ebedee);
-}
-
-/* HEADER */
-.top{
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color:white;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:12px 20px;
-    position:sticky;
-    top:0;
-    z-index:1000;
-}
-
-.marketplace{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.logo{
-    width:40px;
-}
-
-.marketplace h1{
-    font-size:22px;
-}
-
-.nav a{
-    color:white;
-    text-decoration:none;
-    margin-left:15px;
-    font-size:14px;
-}
-
-.nav a:hover{
-    text-decoration:underline;
-}
-
-/* SEARCH BAR */
-.search-bar{
-    margin:15px auto;
-    max-width:500px;
-    display:flex;
-    background:white;
-    border-radius:25px;
-    padding:5px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
-
-.search-bar input{
-    border:none;
-    outline:none;
-    flex:1;
-    padding:8px 12px;
-    border-radius:25px;
-}
-
-.search-bar button{
-    border:none;
-    background:#667eea;
-    color:white;
-    padding:8px 15px;
-    border-radius:20px;
-    cursor:pointer;
-}
-
-/* CATEGORY MENU */
-.item-menu{
-    font-size:18px;
-    font-weight:600;
-    margin:15px;
-}
-
-.categories{
-    display:flex;
-    gap:10px;
-    padding:0 15px;
-    overflow-x:auto;
-}
-
-.category{
-    background:white;
-    padding:6px 14px;
-    border-radius:20px;
-    font-size:13px;
-    box-shadow:0 1px 5px rgba(0,0,0,0.1);
-    cursor:pointer;
-    white-space:nowrap;
-}
-
-.category:hover{
-    background:#667eea;
-    color:white;
-}
-
-/* PRODUCT SCROLL */
-.container {
-    padding: 15px;
-    display: flex;
-    overflow-x: auto;
-    gap: 15px;
-}
-
-/* CARD */
-.card {
-    background: white;
-    border-radius: 12px;
-    padding: 10px;
-    min-width: 140px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-6px);
-}
-
-.card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.item-title {
-    font-size: 13px;
-    margin: 6px 0;
-    font-weight: 600;
-}
-
-.item-price {
-    color: #16a34a;
-    font-size: 13px;
-    margin-bottom: 6px;
-}
-
-/* BUTTONS */
-.buttons{
-    display:flex;
-    gap:5px;
-}
-
-.item-button {
-    flex:1;
-    background: #667eea;
-    color: white;
-    border: none;
-    padding: 5px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.wishlist{
-    background:#f43f5e;
-}
-
-.item-button:hover {
-    opacity:0.85;
-}
-
-/* SCROLLBAR */
-.container::-webkit-scrollbar{
-    height:6px;
-}
-.container::-webkit-scrollbar-thumb{
-    background:#ccc;
-    border-radius:10px;
-}
-
-</style>
+<script src="JavascriptFile.js"></script>
+<link rel="stylesheet" href="CSSFile.css">
 </head>
 
 <body>
@@ -202,16 +21,16 @@ body{
     </div>
 
     <div class="nav">
-        <a href="#">Login</a>
-        <a href="#">Sign Up</a>
+        <a href="LoginPage.html">Login</a>
+        <a href="LoginPage.html">Sign Up</a>
         <a href="#">Help</a>
     </div>
 </div>
 
 <!-- SEARCH -->
 <div class="search-bar">
-    <input type="text" placeholder="Search products...">
-    <button>Search</button>
+    <input type="text" placeholder="Search products..." id="search">
+    <button onclick="searchproducts()">Search</button>
 </div>
 
 <!-- CATEGORY -->
@@ -253,8 +72,36 @@ body{
         </div>
     </div>
 
-</div>
+    <div class="card">
+        <img src="English.jfif">
+        <div class="item-title">English book</div>
+        <div class="item-price">Rs. 700</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
 
+    <div class="card">
+        <img src="biology.jfif">
+        <div class="item-title">biology book</div>
+        <div class="item-price">Rs. 900</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
+
+
+    <div class="card">
+        <img src="physics.jfif">
+        <div class="item-title">Physics book</div>
+        <div class="item-price">Rs. 700</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
 </div>
 
 
@@ -322,8 +169,6 @@ body{
     </div>
 
 </div>
-    
-</div>
 
 
 <div class="item-menu">Stationery ➔
@@ -359,14 +204,36 @@ body{
         </div>
     </div>
 
+     <div class="card">
+        <img src="a4 paper.jfif">
+        <div class="item-title">A4 paper</div>
+        <div class="item-price">Rs. 500</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
+
+     <div class="card">
+        <img src="notebook.jfif">
+        <div class="item-title">NoteBook</div>
+        <div class="item-price">Rs. 100</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
+
+     <div class="card">
+        <img src="newspaper (1).jfif">
+        <div class="item-title">Newspaper</div>
+        <div class="item-price">Rs. 20</div>
+        <div class="buttons">
+            <button class="item-button">Cart</button>
+            <button class="item-button wishlist">❤</button>
+        </div>
+    </div>
 </div>
-</div>
-
-
-
-
-<!-- PRODUCTS -->
-
 
 </body>
 </html>
