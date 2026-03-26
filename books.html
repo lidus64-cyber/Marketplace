@@ -1,35 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marketplace</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <script>
-function searchproducts(){
 
-let input=document.getElementById("search").value.toLowerCase();
-let cards=document.querySelectorAll(".card");
-
-cards.forEach(function(card){
-
-let title=card.querySelector(".item-title").innerText.toLowerCase();
-
-if(title.includes(input) || input===""){
-card.style.display="block";
-}
-else{
-card.style.display="none";
-}
-
-});
-
-}
-// CART & WISHLIST STORAGE
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+// SEARCH
+function searchproducts(){
+    let input = document.getElementById("search").value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(function(card){
+        let title = card.querySelector(".item-title").innerText.toLowerCase();
+
+        if(title.includes(input) || input === ""){
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
 
 // ADD TO CART
 function addToCart(name, price){
@@ -40,14 +32,18 @@ function addToCart(name, price){
 
 // WISHLIST TOGGLE
 function addToWishlist(btn, name, price){
-    let exists = wishlist.find(i => i.name === name);
 
-    if(exists){
-        wishlist = wishlist.filter(i => i.name !== name);
-        btn.style.background = "#f43f5e";
-    } else {
+    let index = wishlist.findIndex(item => item.name === name);
+
+    if(index > -1){
+        wishlist.splice(index, 1);
+        btn.style.background = "#f43f5e"; // default color
+        alert(name + " removed from wishlist");
+    }
+    else{
         wishlist.push({name, price});
         btn.style.background = "green";
+        alert(name + " added to wishlist");
     }
 
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
@@ -55,6 +51,7 @@ function addToWishlist(btn, name, price){
 
 // VIEW CART
 function viewCart(){
+
     if(cart.length === 0){
         alert("Cart is empty");
         return;
@@ -63,17 +60,19 @@ function viewCart(){
     let total = 0;
     let output = "🛒 Cart:\n\n";
 
-    cart.forEach(i => {
-        output += i.name + " - Rs." + i.price + "\n";
-        total += Number(i.price);
+    cart.forEach(item=>{
+        output += item.name + " - Rs." + item.price + "\n";
+        total += Number(item.price);
     });
 
-    output += "\nTotal: Rs." + total;
+    output += "\nTotal = Rs." + total;
+
     alert(output);
 }
 
 // VIEW WISHLIST
 function viewWishlist(){
+
     if(wishlist.length === 0){
         alert("Wishlist is empty");
         return;
@@ -81,16 +80,18 @@ function viewWishlist(){
 
     let output = "❤️ Wishlist:\n\n";
 
-    wishlist.forEach(i => {
-        output += i.name + " - Rs." + i.price + "\n";
+    wishlist.forEach(item=>{
+        output += item.name + " - Rs." + item.price + "\n";
     });
 
     alert(output);
 }
 
 </script>
+
+<title>Books</title>
 <style>
-*{
+    *{
     margin:0;
     padding:0;
     box-sizing:border-box;
@@ -101,7 +102,6 @@ body{
     background: linear-gradient(to right, #fdfbfb, #ebedee);
 }
 
-/* HEADER */
 .top{
     background: linear-gradient(135deg, #667eea, #764ba2);
     color:white;
@@ -198,10 +198,13 @@ body{
 
 /* PRODUCT SCROLL */
 .container {
-    padding: 15px;
-    display: flex;
-    overflow-x: auto;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: repeat(4, 200px);
+    gap: 25px;
+    padding: 20px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: auto;
 }
 
 /* CARD */
@@ -209,9 +212,10 @@ body{
     background: white;
     border-radius: 12px;
     padding: 10px;
-    min-width: 140px;
+    min-width: 14px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     transition: 0.3s;
+    width: 100%;
 }
 
 .card:hover {
@@ -220,9 +224,9 @@ body{
 
 .card img {
     width: 100%;
-    height: 200px;
+    height: 300px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 .item-title {
@@ -270,16 +274,57 @@ body{
     background:#ccc;
     border-radius:10px;
 }
+.back-btn{
+display:inline-block;
+padding:8px 15px;
+background:#667eea;
+border-radius:6px;
+text-decoration:none;
+color:white;
+margin: 20px auto;
+transition: 0.3s;
+
+
+}
+
+.back-btn:hover{
+background: white;
+}
+.back-area{
+    text-align: center;
+    margin-bottom: 40px;
+   
+}
+
+@media (max-width:768px){
+
+.container{
+grid-template-columns: repeat(2, 1fr);
+}
+
+}
+
+/* SMALL MOBILE */
+@media (max-width:480px){
+
+.container{
+grid-template-columns: 1fr;
+}
+
+.search-bar{
+width:95%;
+}
+
+}
 
 
 </style>
 
 </head>
+</head>
 
 <body>
-
-<!-- HEADER -->
-<div class="top">
+    <div class="top">
     <div class="marketplace">
         <img src="image/logo.png" class="logo">
         <h1>Marketplace</h1>
@@ -294,18 +339,16 @@ body{
     </div>
 </div>
 
-<!-- SEARCH -->
-<div class="search-bar">
+
+    <div class="search-bar">
     <input type="text" placeholder="Search products..." id="search">
     <button onclick="searchproducts()">Search</button>
 </div>
 
-<!-- CATEGORY -->
 <div class="item-menu">
-<a href="books.html" class="category-link">Books ➔</a>
 <div class="container">
-
     <div class="card">
+
         <img src="Harry.jpg">
         <div class="item-title">Harry Potter</div>
         <div class="item-price">Rs. 1700</div>
@@ -318,7 +361,7 @@ body{
     <div class="card">
         <img src="Game.jpg">
         <div class="item-title">Game of thrones</div>
-        <div class="item-price">Rs. 2500 </div>
+        <div class="item-price">Rs. 10000 </div>
         <div class="buttons">
             <button class="item-button" onclick="addToCart('Game of thrones',2500)">Cart</button>
             <button class="item-button wishlist" onclick="addToWishlist(this,'Game of thrones',2500)">❤</button>
@@ -328,7 +371,7 @@ body{
     <div class="card">
         <img src="Marvel.jpg">
         <div class="item-title">Marvel comic book</div>
-        <div class="item-price">Rs. 3000</div>
+        <div class="item-price">Rs. </div>
         <div class="buttons">
             <button class="item-button" onclick="addToCart('Marvel comic book',3000)">Cart</button>
             <button class="item-button wishlist" onclick="addToWishlist(this,'Marvel comic book',3000)">❤</button>
@@ -365,137 +408,121 @@ body{
             <button class="item-button wishlist" onclick="addToWishlist(this,'Physics book',700)">❤</button>
         </div>
     </div>
-</div>
 
-
-
-<div class="item-menu">Clothes ➔<div class="container">
 
     <div class="card">
-        <img src="Jacket.jpg">
-        <div class="item-title">Jacket</div>
-        <div class="item-price">Rs. 2100</div>
+        <img src="Game.jpg">
+        <div class="item-title">Game of thrones</div>
+        <div class="item-price">Rs. 10000 </div>
         <div class="buttons">
-            <button class="item-button" onclick="addToCart('Jacket',2100)">Cart</button>
-            <button class="item-button wishlist" onclick="addToWishlist(this,'Jacket',2100)">❤</button>
+            <button class="item-button" onclick="addToCart('Game of thrones',2500)">Cart</button>
+            <button class="item-button wishlist" onclick="addToWishlist(this,'Game of thrones',2500)">❤</button>
         </div>
     </div>
 
+
     <div class="card">
-        <img src="hoodie.jpg">
-        <div class="item-title">Hoodie</div>
-        <div class="item-price">Rs. 3300</div>
+        <img src="Game.jpg">
+        <div class="item-title">Game of thrones</div>
+        <div class="item-price">Rs. 10000 </div>
         <div class="buttons">
-            <button class="item-button" onclick="addToCart('Hoodie',3300)">Cart</button>
-            <button class="item-button wishlist" onclick="addToWishlist(this,'Hoodie',3300)">❤</button>
+            <button class="item-button" onclick="addToCart('Game of thrones',2500)">Cart</button>
+            <button class="item-button wishlist" onclick="addToWishlist(this,'Game of thrones',2500)">❤</button>
         </div>
     </div>
 
+
     <div class="card">
-        <img src="trousers.jpg">
-        <div class="item-title">Trousers</div>
-        <div class="item-price">Rs. 2500</div>
+        <img src="Game.jpg">
+        <div class="item-title">Game of thrones</div>
+        <div class="item-price">Rs. 10000 </div>
         <div class="buttons">
-            <button class="item-button" onclick="addToCart('Trousers',2500)">Cart</button>
-            <button class="item-button wishlist" onclick="addToWishlist(this,'Trousers',2500)">❤</button>
-        </div>
-    </div>
-    
-    <div class="card">
-        <img src="messi.jpg">
-        <div class="item-title">Signed messi jersey</div>
-        <div class="item-price">Rs. 15000</div>
-        <div class="buttons">
-            <button class="item-button" onclick="addToCart('Signed messi jersey',15000)">Cart</button>
-            <button class="item-button wishlist" onclick="addToWishlist(this,'Signed messi jersey',15000)">❤</button>
+            <button class="item-button" onclick="addToCart('Game of thrones',2500)">Cart</button>
+            <button class="item-button wishlist" onclick="addToWishlist(this,'Game of thrones',2500)">❤</button>
         </div>
     </div>
 
+
     <div class="card">
-        <img src="brazil.jpg">
-        <div class="item-title">Brazil Jersey</div>
-        <div class="item-price">Rs. 2500</div>
+        <img src="Game.jpg">
+        <div class="item-title">Game of thrones</div>
+        <div class="item-price">Rs. 10000 </div>
         <div class="buttons">
-            <button class="item-button" onclick="addToCart('Brazil Jersey',2500)">Cart</button>
-            <button class="item-button wishlist" onclick="addToWishlist(this,'Brazil Jersey',2500)">❤</button>
+            <button class="item-button" onclick="addToCart('Game of thrones',2500)">Cart</button>
+            <button class="item-button wishlist" onclick="addToWishlist(this,'Game of thrones',2500)">❤</button>
         </div>
     </div>
 
     <div class="card">
-        <img src="Old Navy.jpg">
-        <div class="item-title">Old Navy</div>
-        <div class="item-price">Rs. 1500</div>
+        <img src="Game.jpg">
+        <div class="item-title">Game of thrones</div>
+        <div class="item-price">Rs. 10000 </div>
         <div class="buttons">
-            <button class="item-button" onclick="addToCart('Old Navy',1500)">Cart</button>
-            <button class="item-button wishlist" onclick="addToWishlist(this,'Old Navy',1500)">❤</button>
+            <button class="item-button" onclick="addToCart('Game of thrones',2500)">Cart</button>
+            <button class="item-button wishlist" onclick="addToWishlist(this,'Game of thrones',2500)">❤</button>
         </div>
     </div>
 
-</div>
-
-
-<div class="item-menu">Stationery ➔
-    <div class="container">
 
     <div class="card">
-        <img src="Pen.jpg">
-        <div class="item-title">Pen</div>
-        <div class="item-price">Rs. 50</div>
+        <img src="Game.jpg">
+        <div class="item-title">Game of thrones</div>
+        <div class="item-price">Rs. 10000 </div>
         <div class="buttons">
-            <button class="item-button" onclick="addToCart('Pen',50)">Cart</button>
-            <button class="item-button wishlist" onclick="addToWishlist(this,'Pen',50)">❤</button>
+            <button class="item-button" onclick="addToCart('Game of thrones',2500)">Cart</button>
+            <button class="item-button wishlist" onclick="addToWishlist(this,'Game of thrones',2500)">❤</button>
         </div>
     </div>
+
 
     <div class="card">
-        <img src="Pencil.jpg">
-        <div class="item-title">Pencil</div>
-        <div class="item-price">Rs. 20</div>
+        <img src="Game.jpg">
+        <div class="item-title">Game of thrones</div>
+        <div class="item-price">Rs. 10000 </div>
         <div class="buttons">
-            <button class="item-button" onclick="addToCart('Pencil',20)">Cart</button>
-            <button class="item-button wishlist" onclick="addToWishlist(this,'Pencil',20)">❤</button>
+            <button class="item-button" onclick="addToCart('Game of thrones',2500)">Cart</button>
+            <button class="item-button wishlist" onclick="addToWishlist(this,'Game of thrones',2500)">❤</button>
         </div>
     </div>
+
 
     <div class="card">
-        <img src="Sharpner.jpg">
-        <div class="item-title">Sharpner</div>
-        <div class="item-price">Rs. 20</div>
+        <img src="Game.jpg">
+        <div class="item-title">Game of thrones</div>
+        <div class="item-price">Rs. 10000 </div>
         <div class="buttons">
-            <button class="item-button" onclick="addToCart('Sharpner',20">Cart</button>
-            <button class="item-button wishlist" onclick="addToWishlist(this,'Sharpner',20)">❤</button>
+            <button class="item-button" onclick="addToCart('Game of thrones',2500)">Cart</button>
+            <button class="item-button wishlist" onclick="addToWishlist(this,'Game of thrones',2500)">❤</button>
         </div>
     </div>
 
-     <div class="card">
-        <img src="a4 paper.jfif">
-        <div class="item-title">A4 paper</div>
-        <div class="item-price">Rs. 500</div>
+
+    <div class="card">
+        <img src="Game.jpg">
+        <div class="item-title">Game of thrones</div>
+        <div class="item-price">Rs. 10000 </div>
         <div class="buttons">
-            <button class="item-button" onclick="addToCart('A4 paper',500)">Cart</button>
-            <button class="item-button wishlist" onclick="addToWishlist(this,'A4 paper',500)">❤</button>
+            <button class="item-button" onclick="addToCart('Game of thrones',2500)">Cart</button>
+            <button class="item-button wishlist" onclick="addToWishlist(this,'Game of thrones',2500)">❤</button>
         </div>
     </div>
 
-     <div class="card">
-        <img src="notebook.jfif">
-        <div class="item-title">NoteBook</div>
-        <div class="item-price">Rs. 100</div>
+
+    <div class="card">
+        <img src="Game.jpg">
+        <div class="item-title">Game of thrones</div>
+        <div class="item-price">Rs. 10000 </div>
         <div class="buttons">
-            <button class="item-button" onclick="addToCart('NoteBook',100)">Cart</button>
-            <button class="item-button wishlist" onclick="addToWishlist(this,'NoteBook',100)">❤</button>
+            <button class="item-button" onclick="addToCart('Game of thrones',2500)">Cart</button>
+            <button class="item-button wishlist" onclick="addToWishlist(this,'Game of thrones',2500)">❤</button>
         </div>
     </div>
 
-     <div class="card">
-        <img src="newspaper (1).jfif">
-        <div class="item-title">Newspaper</div>
-        <div class="item-price">Rs. 20</div>
-        <div class="buttons">
-            <button class="item-button" onclick="addToCart('Newspaper',20)">Cart</button>
-            <button class="item-button wishlist" onclick="addToWishlist(this,'Newspaper',20)">❤</button>
-        </div>
+
     </div>
+    </div>
+    <div class="back-area">
+<a href="Customer.html" class="back-btn">⬅ Back to Home</a>
 </div>
 
 </body>
