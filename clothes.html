@@ -1,11 +1,531 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+// SEARCH
+function searchproducts(){
+    let input = document.getElementById("search").value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(function(card){
+        let title = card.querySelector(".item-title").innerText.toLowerCase();
+
+        if(title.includes(input) || input === ""){
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+
+// ADD TO CART
+function addToCart(name, price){
+    cart.push({name, price});
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert(name + " added to cart!");
+}
+
+// WISHLIST TOGGLE
+function addToWishlist(btn, name, price){
+
+    let index = wishlist.findIndex(item => item.name === name);
+
+    if(index > -1){
+        wishlist.splice(index, 1);
+        btn.style.background = "#f43f5e"; // default color
+        alert(name + " removed from wishlist");
+    }
+    else{
+        wishlist.push({name, price});
+        btn.style.background = "green";
+        alert(name + " added to wishlist");
+    }
+
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+}
+
+// VIEW CART
+function viewCart(){
+
+    if(cart.length === 0){
+        alert("Cart is empty");
+        return;
+    }
+
+    let total = 0;
+    let output = "🛒 Cart:\n\n";
+
+    cart.forEach(item=>{
+        output += item.name + " - Rs." + item.price + "\n";
+        total += Number(item.price);
+    });
+
+    output += "\nTotal = Rs." + total;
+
+    alert(output);
+}
+
+// VIEW WISHLIST
+function viewWishlist(){
+
+    if(wishlist.length === 0){
+        alert("Wishlist is empty");
+        return;
+    }
+
+    let output = "❤️ Wishlist:\n\n";
+
+    wishlist.forEach(item=>{
+        output += item.name + " - Rs." + item.price + "\n";
+    });
+
+    alert(output);
+}
+
+</script>
+
+<title>Books</title>
+<style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+body{
+    background: linear-gradient(to right, #fdfbfb, #ebedee);
+}
+
+.top{
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 20px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.marketplace{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo{
+    width:40px;
+}
+
+.marketplace h1{
+    font-size:22px;
+}
+
+.nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:15px;
+    font-size:14px;
+}
+
+.nav a:hover{
+    text-decoration:underline;
+}
+
+/* SEARCH BAR */
+.search-bar{
+    margin:15px auto;
+    max-width:500px;
+    display:flex;
+    background:white;
+    border-radius:25px;
+    padding:5px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.search-bar input{
+    border:none;
+    outline:none;
+    flex:1;
+    padding:8px 12px;
+    border-radius:25px;
+}
+
+.search-bar button{
+    border:none;
+    background:#667eea;
+    color:white;
+    padding:8px 15px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+/* CATEGORY MENU */
+.item-menu{
+    font-size:18px;
+    font-weight:600;
+    margin:15px;
+}
+
+.categories{
+    display:flex;
+    gap:10px;
+    padding:0 15px;
+    overflow-x:auto;
+}
+
+.category{
+    background:white;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    box-shadow:0 1px 5px rgba(0,0,0,0.1);
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.category:hover{
+    background:#667eea;
+    color:white;
+}
+
+/* PRODUCT SCROLL */
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, 200px);
+    gap: 25px;
+    padding: 20px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* CARD */
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 10px;
+    min-width: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    width: 100%;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+}
+
+.card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.item-title {
+    font-size: 13px;
+    margin: 6px 0;
+    font-weight: 600;
+}
+
+.item-price {
+    color: #16a34a;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+/* BUTTONS */
+.buttons{
+    display:flex;
+    gap:5px;
+}
+
+.item-button {
+    flex:1;
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.wishlist{
+    background:#f43f5e;
+}
+
+.item-button:hover {
+    opacity:0.85;
+}
+
+/* SCROLLBAR */
+.container::-webkit-scrollbar{
+    height:6px;
+}
+.container::-webkit-scrollbar-thumb{
+    background:#ccc;
+    border-radius:10px;
+}
+.back-btn{
+display:inline-block;
+padding:8px 15px;
+background:#667eea;
+border-radius:6px;
+text-decoration:none;
+color:white;
+margin: 20px auto;
+transition: 0.3s;
+
+
+}
+
+.back-btn:hover{
+background: white;
+}
+.back-area{
+    text-align: center;
+    margin-bottom: 40px;
+   
+}
+
+@media (max-width:768px){
+
+.container{
+grid-template-columns: repeat(2, 1fr);
+}
+
+}
+
+/* SMALL MOBILE */
+@media (max-width:480px){
+
+.container{
+grid-template-columns: 1fr;
+}
+
+.search-bar{
+width:95%;
+}
+
+}
+
+
+</style>
+
 </head>
+</head>
+
 <body>
-    
-</body>
-</html>
+    <div class="top">
+    <div class="marketplace">
+        <img src="image/logo.png" class="logo">
+        <h1>Marketplace</h1>
+    </div>
+
+    <div class="nav">
+        <a href="LoginPage.html">Login</a>
+        <a href="LoginPage.html">Sign Up</a>
+        <a href="help.html">Help</a>
+        <button onclick="viewCart()">🛒 Cart</button>
+        <button onclick="viewWishlist()">❤️ Wishlist</button>
+    </div>
+</div>
+
+
+    <div class="search-bar">
+    <input type="text" placeholder="Search products..." id="search">
+    <button onclick="searchproducts()">Search</button>
+</div>
+
+<div class="item-menu">
+    <div class="container">
+
+<!-- 1 -->
+<div class="card">
+<img src="image/baggy.jpg">
+<div class="item-title">Baggy Casual Pants</div>
+<div class="item-price">Rs. 1800</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Baggy Casual Pants',1800)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Baggy Casual Pants',1800)">❤</button>
+</div>
+</div>
+
+<!-- 2 -->
+<div class="card">
+<img src="image/breathable.jpg">
+<div class="item-title">Breathable Sports T-Shirt</div>
+<div class="item-price">Rs. 1200</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Breathable Sports T-Shirt',1200)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Breathable Sports T-Shirt',1200)">❤</button>
+</div>
+</div>
+
+<!-- 3 -->
+<div class="card">
+<img src="image/breeze.jpg">
+<div class="item-title">Breeze Summer Shirt</div>
+<div class="item-price">Rs. 1500</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Breeze Summer Shirt',1500)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Breeze Summer Shirt',1500)">❤</button>
+</div>
+</div>
+
+<!-- 4 -->
+<div class="card">
+<img src="image/cotton.jpg">
+<div class="item-title">Cotton Comfort Shirt</div>
+<div class="item-price">Rs. 1700</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Cotton Comfort Shirt',1700)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Cotton Comfort Shirt',1700)">❤</button>
+</div>
+</div>
+
+<!-- 5 -->
+<div class="card">
+<img src="image/CR7.jpg">
+<div class="item-title">CR7 Style T-Shirt</div>
+<div class="item-price">Rs. 2200</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('CR7 Style T-Shirt',2200)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'CR7 Style T-Shirt',2200)">❤</button>
+</div>
+</div>
+
+<!-- 6 -->
+<div class="card">
+<img src="image/fine.jpg">
+<div class="item-title">Fine Formal Shirt</div>
+<div class="item-price">Rs. 2400</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Fine Formal Shirt',2400)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Fine Formal Shirt',2400)">❤</button>
+</div>
+</div>
+
+<!-- 7 -->
+<div class="card">
+<img src="image/fleece.jpg">
+<div class="item-title">Warm Fleece Jacket</div>
+<div class="item-price">Rs. 3500</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Warm Fleece Jacket',3500)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Warm Fleece Jacket',3500)">❤</button>
+</div>
+</div>
+
+<!-- 8 -->
+<div class="card">
+<img src="image/layer.jpg">
+<div class="item-title">Layered Winter Wear</div>
+<div class="item-price">Rs. 3900</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Layered Winter Wear',3900)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Layered Winter Wear',3900)">❤</button>
+</div>
+</div>
+
+<!-- 9 -->
+<div class="card">
+<img src="image/martin.jpg">
+<div class="item-title">Martin Leather Shoes</div>
+<div class="item-price">Rs. 4200</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Martin Leather Shoes',4200)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Martin Leather Shoes',4200)">❤</button>
+</div>
+</div>
+
+<!-- 10 -->
+<div class="card">
+<img src="image/plain.jpg">
+<div class="item-title">Plain White Shirt</div>
+<div class="item-price">Rs. 1600</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Plain White Shirt',1600)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Plain White Shirt',1600)">❤</button>
+</div>
+</div>
+
+<!-- 11 -->
+<div class="card">
+<img src="image/school.jpg">
+<div class="item-title">School Uniform Shirt</div>
+<div class="item-price">Rs. 900</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('School Uniform Shirt',900)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'School Uniform Shirt',900)">❤</button>
+</div>
+</div>
+
+<!-- 12 -->
+<div class="card">
+<img src="image/shark.jpg">
+<div class="item-title">Shark Printed T-Shirt</div>
+<div class="item-price">Rs. 1400</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Shark Printed T-Shirt',1400)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Shark Printed T-Shirt',1400)">❤</button>
+</div>
+</div>
+
+<!-- 13 -->
+<div class="card">
+<img src="image/sleeved.jpg">
+<div class="item-title">Full Sleeved Shirt</div>
+<div class="item-price">Rs. 2000</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Full Sleeved Shirt',2000)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Full Sleeved Shirt',2000)">❤</button>
+</div>
+</div>
+
+<!-- 14 -->
+<div class="card">
+<img src="image/sneakers.jpg">
+<div class="item-title">Casual Sneakers</div>
+<div class="item-price">Rs. 3200</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Casual Sneakers',3200)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Casual Sneakers',3200)">❤</button>
+</div>
+</div>
+
+<!-- 15 -->
+<div class="card">
+<img src="image/sporty.jpg">
+<div class="item-title">Sporty Running Shoes</div>
+<div class="item-price">Rs. 3600</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Sporty Running Shoes',3600)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Sporty Running Shoes',3600)">❤</button>
+</div>
+</div>
+
+<!-- 16 -->
+<div class="card">
+<img src="image/trekkking.jpg">
+<div class="item-title">Trekking Outdoor Shoes</div>
+<div class="item-price">Rs. 4100</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Trekking Outdoor Shoes',4100)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Trekking Outdoor Shoes',4100)">❤</button>
+</div>
+</div>
+ <div class="back-area">
+<a href="Customer.html" class="back-btn">⬅ Back to Home</a>
+</div>
+
+</div>
+</div></body></html>
