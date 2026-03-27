@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+// SEARCH
+function searchproducts(){
+    let input = document.getElementById("search").value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(function(card){
+        let title = card.querySelector(".item-title").innerText.toLowerCase();
+
+        if(title.includes(input) || input === ""){
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+
+// ADD TO CART
+function addToCart(name, price){
+    cart.push({name, price});
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert(name + " added to cart!");
+}
+
+// WISHLIST TOGGLE
+function addToWishlist(btn, name, price){
+
+    let index = wishlist.findIndex(item => item.name === name);
+
+    if(index > -1){
+        wishlist.splice(index, 1);
+        btn.style.background = "#f43f5e"; // default color
+        alert(name + " removed from wishlist");
+    }
+    else{
+        wishlist.push({name, price});
+        btn.style.background = "green";
+        alert(name + " added to wishlist");
+    }
+
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+}
+
+// VIEW CART
+function viewCart(){
+
+    if(cart.length === 0){
+        alert("Cart is empty");
+        return;
+    }
+
+    let total = 0;
+    let output = "🛒 Cart:\n\n";
+
+    cart.forEach(item=>{
+        output += item.name + " - Rs." + item.price + "\n";
+        total += Number(item.price);
+    });
+
+    output += "\nTotal = Rs." + total;
+
+    alert(output);
+}
+
+// VIEW WISHLIST
+function viewWishlist(){
+
+    if(wishlist.length === 0){
+        alert("Wishlist is empty");
+        return;
+    }
+
+    let output = "❤️ Wishlist:\n\n";
+
+    wishlist.forEach(item=>{
+        output += item.name + " - Rs." + item.price + "\n";
+    });
+
+    alert(output);
+}
+
+</script>
+
+<title>Books</title>
+<style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+body{
+    background: linear-gradient(to right, #fdfbfb, #ebedee);
+}
+
+.top{
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 20px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.marketplace{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo{
+    width:40px;
+}
+
+.marketplace h1{
+    font-size:22px;
+}
+
+.nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:15px;
+    font-size:14px;
+}
+
+.nav a:hover{
+    text-decoration:underline;
+}
+
+/* SEARCH BAR */
+.search-bar{
+    margin:15px auto;
+    max-width:500px;
+    display:flex;
+    background:white;
+    border-radius:25px;
+    padding:5px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.search-bar input{
+    border:none;
+    outline:none;
+    flex:1;
+    padding:8px 12px;
+    border-radius:25px;
+}
+
+.search-bar button{
+    border:none;
+    background:#667eea;
+    color:white;
+    padding:8px 15px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+/* CATEGORY MENU */
+.item-menu{
+    font-size:18px;
+    font-weight:600;
+    margin:15px;
+}
+
+.categories{
+    display:flex;
+    gap:10px;
+    padding:0 15px;
+    overflow-x:auto;
+}
+
+.category{
+    background:white;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    box-shadow:0 1px 5px rgba(0,0,0,0.1);
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.category:hover{
+    background:#667eea;
+    color:white;
+}
+
+/* PRODUCT SCROLL */
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, 200px);
+    gap: 25px;
+    padding: 20px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* CARD */
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 10px;
+    min-width: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    width: 100%;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+}
+
+.card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.item-title {
+    font-size: 13px;
+    margin: 6px 0;
+    font-weight: 600;
+}
+
+.item-price {
+    color: #16a34a;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+/* BUTTONS */
+.buttons{
+    display:flex;
+    gap:5px;
+}
+
+.item-button {
+    flex:1;
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.wishlist{
+    background:#f43f5e;
+}
+
+.item-button:hover {
+    opacity:0.85;
+}
+
+/* SCROLLBAR */
+.container::-webkit-scrollbar{
+    height:6px;
+}
+.container::-webkit-scrollbar-thumb{
+    background:#ccc;
+    border-radius:10px;
+}
+.back-btn{
+display:inline-block;
+padding:8px 15px;
+background:#667eea;
+border-radius:6px;
+text-decoration:none;
+color:white;
+margin: 20px auto;
+transition: 0.3s;
+
+
+}
+
+.back-btn:hover{
+background: white;
+}
+.back-area{
+    text-align: center;
+    margin-bottom: 40px;
+   
+}
+
+@media (max-width:768px){
+
+.container{
+grid-template-columns: repeat(2, 1fr);
+}
+
+}
+
+/* SMALL MOBILE */
+@media (max-width:480px){
+
+.container{
+grid-template-columns: 1fr;
+}
+
+.search-bar{
+width:95%;
+}
+
+}
+
+
+</style>
+
+</head>
+</head>
+
+<body>
+    <div class="top">
+    <div class="marketplace">
+        <img src="image/logo.png" class="logo">
+        <h1>Marketplace</h1>
+    </div>
+
+    <div class="nav">
+        <a href="LoginPage.html">Login</a>
+        <a href="LoginPage.html">Sign Up</a>
+        <a href="help.html">Help</a>
+        <button onclick="viewCart()">🛒 Cart</button>
+        <button onclick="viewWishlist()">❤️ Wishlist</button>
+    </div>
+</div>
+
+
+    <div class="search-bar">
+    <input type="text" placeholder="Search products..." id="search">
+    <button onclick="searchproducts()">Search</button>
+</div>
+
+<div class="item-menu">
+    <div class="container">
+
+<div class="card">
+<img src="image/w1.jpg">
+<div class="item-title">Mini-10 Eraser & Sharpener Set</div>
+<div class="item-price">Rs. 45</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Mini-10 Eraser & Sharpener Set',45)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Mini-10 Eraser & Sharpener Set',45)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w2.jpg">
+<div class="item-title">Sachlian Legend Notebook</div>
+<div class="item-price">Rs. 85</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Sachlian Legend Notebook',85)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Sachlian Legend Notebook',85)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w4.jpg">
+<div class="item-title">Platinum Apsara Pencil Pack</div>
+<div class="item-price">Rs. 60</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Platinum Apsara Pencil Pack',60)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Platinum Apsara Pencil Pack',60)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w6.jpg">
+<div class="item-title">Accura Binder Clips 32mm (12 pcs)</div>
+<div class="item-price">Rs. 120</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Accura Binder Clips 32mm',120)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Accura Binder Clips 32mm',120)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w7.jpg">
+<div class="item-title">DOMS Sports Eraser</div>
+<div class="item-price">Rs. 25</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('DOMS Sports Eraser',25)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'DOMS Sports Eraser',25)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w8.jpg">
+<div class="item-title">Non-Dust Jumbo Eraser</div>
+<div class="item-price">Rs. 35</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Non-Dust Jumbo Eraser',35)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Non-Dust Jumbo Eraser',35)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w9.jpg">
+<div class="item-title">Camlin Rubber Stamp Ink 25ml</div>
+<div class="item-price">Rs. 55</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Camlin Rubber Stamp Ink',55)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Camlin Rubber Stamp Ink',55)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w10.jpg">
+<div class="item-title">Camel Impressions Deluxe Stamp Pad</div>
+<div class="item-price">Rs. 95</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Camel Impressions Stamp Pad',95)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Camel Impressions Stamp Pad',95)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w11.jpg">
+<div class="item-title">2X Longer Writing Cartridge Pen</div>
+<div class="item-price">Rs. 75</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('2X Longer Writing Cartridge',75)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'2X Longer Writing Cartridge',75)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w12.jpg">
+<div class="item-title">Hauser Repel Ballpoint Pen</div>
+<div class="item-price">Rs. 40</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Hauser Repel Pen',40)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Hauser Repel Pen',40)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w14.jpg">
+<div class="item-title">Linc Geometry Instrument Box</div>
+<div class="item-price">Rs. 280</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Linc Geometry Box',280)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Linc Geometry Box',280)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w16.jpg">
+<div class="item-title">Oddly Permanent Glue Stick</div>
+<div class="item-price">Rs. 65</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Oddly Permanent Glue Stick',65)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Oddly Permanent Glue Stick',65)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w17.jpg">
+<div class="item-title">Bonder Glue Stick</div>
+<div class="item-price">Rs. 50</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Bonder Glue Stick',50)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Bonder Glue Stick',50)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w19.jpg">
+<div class="item-title">10 Colour Flair Felt Tip Pens</div>
+<div class="item-price">Rs. 160</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('10 Colour Flair Pens',160)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'10 Colour Flair Pens',160)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w6.jpg">
+<div class="item-title">Accura Paper Clips Set</div>
+<div class="item-price">Rs. 90</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('Accura Paper Clips Set',90)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'Accura Paper Clips Set',90)">❤</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="image/w7.jpg">
+<div class="item-title">DOMS Eraser Value Pack</div>
+<div class="item-price">Rs. 70</div>
+<div class="buttons">
+<button class="item-button" onclick="addToCart('DOMS Eraser Value Pack',70)">Cart</button>
+<button class="item-button wishlist" onclick="addToWishlist(this,'DOMS Eraser Value Pack',70)">❤</button>
+</div>
+</div>
+
+<div class="back-area">
+<a href="Customer.html" class="back-btn">⬅ Back to Home</a>
+</div>
+
+</div>
+</div>
+</body></html>
