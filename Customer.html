@@ -10,43 +10,43 @@
 <script>
 function searchproducts(){
 
-let input=document.getElementById("search").value.toLowerCase();
-let cards=document.querySelectorAll(".card");
+let input=document.getElementById("search").value.toLowerCase();  //it will get the text
+let cards=document.querySelectorAll(".card"); //it will get all the cards
 
-cards.forEach(function(card){
+cards.forEach(function(card){ // loops through all the cards
 
-let title=card.querySelector(".item-title").innerText.toLowerCase();
+let title=card.querySelector(".item-title").innerText.toLowerCase(); //it will get the title of the card
 
-if(title.includes(input) || input===""){
-card.style.display="block";
+if(title.includes(input) || input===""){ // if it include input then print
+card.style.display="block"; //it will display the card
 }
 else{
-card.style.display="none";
+card.style.display="none"; //it will hide the card
 }
 
-});
+}); 
 
 }
-// CART & WISHLIST STORAGE
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+// CART & WISHLIST STORAGE  
+let cart = JSON.parse(localStorage.getItem("cart")) || []; // get cart from local storage
+let wishlist = JSON.parse(localStorage.getItem("wishlist")) || []; // get wishlist from local storage
 
 // ADD TO CART
 function addToCart(name, price){
-    cart.push({name, price});
-    localStorage.setItem("cart", JSON.stringify(cart));
+    cart.push({name, price}); // add to cart
+    localStorage.setItem("cart", JSON.stringify(cart)); // save cart to local storage
     alert(name + " added to cart!");
 }
 
 // WISHLIST TOGGLE
-function addToWishlist(btn, name, price){
-    let exists = wishlist.find(i => i.name === name);
+function addToWishlist(btn, name, price){ 
+    let exists = wishlist.find(i => i.name === name); // check if the item is already in the wishlist
 
     if(exists){
-        wishlist = wishlist.filter(i => i.name !== name);
+        wishlist = wishlist.filter(i => i.name !== name); // remove the item from the wishlist
         btn.style.background = "#f43f5e";
-    } else {
-        wishlist.push({name, price});
+    } else { 
+        wishlist.push({name, price}); // add the item to the wishlist
         btn.style.background = "green";
     }
 
@@ -63,9 +63,9 @@ function viewCart(){
     let total = 0;
     let output = "🛒 Cart:\n\n";
 
-    cart.forEach(i => {
-        output += i.name + " - Rs." + i.price + "\n";
-        total += Number(i.price);
+    cart.forEach(i => {  // loop through the cart
+        output += i.name + " - Rs." + i.price + "\n"; 
+        total += Number(i.price); 
     });
 
     output += "\nTotal: Rs." + total;
